@@ -6,7 +6,9 @@
 
 ## セットアップ
 
-### 1. SQLiteデータベースの作成
+### Docker環境の場合
+
+#### 1. SQLiteデータベースの作成
 
 以下のコマンドを実行して、SQLiteデータベースを作成してください：
 
@@ -19,12 +21,86 @@ python3 setup_sqlite.py
 - 必要なテーブル（customer, category, product, receipt, store, geocode）を作成
 - CSVファイルからデータを読み込み
 
-### 2. データベースの確認
+#### 2. データベースの確認
 
 データベースが正しく作成されたか確認するには：
 
 ```bash
 sqlite3 dsdojo.db "SELECT COUNT(*) FROM customer;"
+```
+
+### Windows環境（Dockerなし）の場合
+
+WindowsのコマンドプロンプトでDockerを使わずに実行する手順です。
+
+#### 前提条件
+
+1. **Python 3のインストール**
+   - [Python公式サイト](https://www.python.org/downloads/)から最新版をダウンロード
+   - インストール時に「Add Python to PATH」にチェックを入れる
+   - コマンドプロンプトで確認: `python --version`
+
+2. **必要なパッケージのインストール**
+   ```cmd
+   pip install jupyter notebook ipython-sql sqlalchemy
+   ```
+
+#### セットアップ手順
+
+1. **リポジトリのクローンまたはダウンロード**
+   ```cmd
+   git clone https://github.com/The-Japan-DataScientist-Society/100knocks-preprocess.git
+   cd 100knocks-preprocess\docker\work
+   ```
+   
+   または、GitHubからZIPをダウンロードして解凍し、`docker\work` フォルダに移動してください。
+
+2. **SQLiteデータベースの作成**
+   ```cmd
+   python setup_sqlite.py
+   ```
+   
+   実行が成功すると、以下のメッセージが表示されます：
+   ```
+   ✓ SQLite database created successfully: dsdojo.db
+     Database size: 25.73 MB
+   ```
+
+3. **Jupyter Notebookの起動**
+   ```cmd
+   jupyter notebook
+   ```
+   
+   ブラウザが自動的に開き、Jupyter Notebookの画面が表示されます。
+
+4. **ノートブックを開く**
+   - `preprocess_knock_SQLite.ipynb` をクリックして開く
+   - 最初のセルを実行してSQLiteデータベースに接続
+   - CRUD演習問題（C-001からC-010）を順番に解いていく
+
+#### トラブルシューティング（Windows）
+
+**Python が認識されない場合**
+```cmd
+python --version
+```
+が動作しない場合は、Pythonのインストールパスを環境変数PATHに追加してください。
+
+**pip が認識されない場合**
+```cmd
+python -m pip install jupyter notebook ipython-sql sqlalchemy
+```
+
+**データベースファイルの場所**
+```cmd
+dir dsdojo.db
+```
+でファイルの存在を確認できます。
+
+**データベースをリセットしたい場合**
+```cmd
+del dsdojo.db
+python setup_sqlite.py
 ```
 
 ## 利用可能なノートブック
@@ -65,14 +141,16 @@ SQLiteとPostgreSQLでは一部の構文や関数が異なります：
 
 ## トラブルシューティング
 
-### データベースが見つからない
+### Docker環境
+
+**データベースが見つからない**
 
 ```python
 # Jupyterノートブック内で実行
 !python3 setup_sqlite.py
 ```
 
-### データベースをリセットしたい
+**データベースをリセットしたい**
 
 既存の `dsdojo.db` ファイルを削除してから、再度 `setup_sqlite.py` を実行してください：
 
@@ -80,6 +158,26 @@ SQLiteとPostgreSQLでは一部の構文や関数が異なります：
 rm dsdojo.db
 python3 setup_sqlite.py
 ```
+
+### Windows環境
+
+**Python が認識されない**
+- Pythonが正しくインストールされているか確認: `python --version`
+- 環境変数PATHにPythonのインストールパスが含まれているか確認
+- コマンドプロンプトを再起動
+
+**モジュールが見つからない (ModuleNotFoundError)**
+```cmd
+pip install jupyter notebook ipython-sql sqlalchemy
+```
+
+**データベースファイルが見つからない**
+- 現在のディレクトリを確認: `cd`
+- `docker\work` フォルダにいることを確認
+- データベースファイルの存在を確認: `dir dsdojo.db`
+
+**文字化けが発生する**
+- コマンドプロンプトで `chcp 65001` を実行してUTF-8に設定
 
 ## 参考リンク
 

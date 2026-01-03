@@ -55,6 +55,8 @@ docker compose up -d --build --wait
 
 ### SQLiteを使用する場合
 
+#### Docker環境
+
 SQLiteを使用した演習を行う場合は、以下の手順でデータベースを作成してください：
 
 ```bash
@@ -70,6 +72,27 @@ python3 setup_sqlite.py
 ```
 
 その後、`preprocess_knock_SQLite.ipynb` を開いて演習を開始してください。
+
+#### Windows環境（Dockerなし）
+
+Windowsでコマンドプロンプトから実行する場合：
+
+1. **前提条件**
+   - Python 3をインストール（[python.org](https://www.python.org/downloads/)）
+   - 必要なパッケージをインストール: `pip install jupyter notebook ipython-sql sqlalchemy`
+
+2. **セットアップ**
+   ```cmd
+   cd docker\work
+   python setup_sqlite.py
+   ```
+
+3. **Jupyter Notebookの起動**
+   ```cmd
+   jupyter notebook
+   ```
+
+詳細な手順は `docker/work/README_SQLite.md` を参照してください。
 
 ### 利用可能なノートブック
 
