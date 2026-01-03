@@ -13,12 +13,12 @@ from pathlib import Path
 DB_PATH = Path(__file__).parent / "dsdojo.db"
 DATA_DIR = Path(__file__).parent / "data"
 
+# Define allowed tables for security - prevents SQL injection
+ALLOWED_TABLES = {'customer', 'category', 'product', 'store', 'receipt', 'geocode'}
+
 def create_tables(conn):
     """Create all tables with schema compatible with SQLite."""
     cursor = conn.cursor()
-    
-    # Define allowed tables for security
-    ALLOWED_TABLES = {'customer', 'category', 'product', 'store', 'receipt', 'geocode'}
     
     # Drop existing tables if they exist
     tables = ['customer', 'category', 'product', 'store', 'receipt', 'geocode']
@@ -120,9 +120,6 @@ def create_tables(conn):
 
 def load_csv_data(conn, table_name, csv_file):
     """Load data from CSV file into specified table."""
-    # Define allowed tables for security
-    ALLOWED_TABLES = {'customer', 'category', 'product', 'store', 'receipt', 'geocode'}
-    
     if table_name not in ALLOWED_TABLES:
         raise ValueError(f"Invalid table name: {table_name}")
     
@@ -183,8 +180,6 @@ def main():
         # Show table counts
         print("\nTable row counts:")
         cursor = conn.cursor()
-        # Define allowed tables for security
-        ALLOWED_TABLES = {'customer', 'category', 'product', 'store', 'receipt', 'geocode'}
         for table in tables:
             if table not in ALLOWED_TABLES:
                 raise ValueError(f"Invalid table name: {table}")
