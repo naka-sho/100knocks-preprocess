@@ -3,7 +3,8 @@
 ## Overview
 
 - データサイエンス100本ノック（構造化データ加工編）を実践するための演習問題とデータ、および環境構築のためのスクリプト一式
-- 演習問題はSQL、Python、Rで共通
+- 演習問題はSQL（PostgreSQL/SQLite）、Python、Rで共通
+- SQLiteを使用した簡単なCRUD操作の演習問題も含まれています
 - 言語によっては向かない設問もあるが、「この言語のときはこう書けば実現できる」という技術習得を目指すことを優先
 - 個人情報のように見える項目は全てダミーデータを利用
 - 大学、企業など組織でのご利用にあたっては、「データサイエンティスト協会スキル定義委員」の「データサイエンス100本ノック（構造化データ加工編）」を利用していることを明示いただければ自由に利用してOK
@@ -51,6 +52,31 @@ docker compose up -d --build --wait
 
 - ブラウザで以下のURLにアクセスします
   - [http://localhost:8888](http://localhost:8888)
+
+### SQLiteを使用する場合
+
+SQLiteを使用した演習を行う場合は、以下の手順でデータベースを作成してください：
+
+```bash
+# Dockerコンテナ内で実行する場合
+docker exec -it dss-notebook bash
+cd /home/jovyan/work
+python3 setup_sqlite.py
+
+# または、ブラウザでJupyter Notebookにアクセスし、
+# ターミナルから以下を実行
+cd ~/work
+python3 setup_sqlite.py
+```
+
+その後、`preprocess_knock_SQLite.ipynb` を開いて演習を開始してください。
+
+### 利用可能なノートブック
+
+- `preprocess_knock_SQL.ipynb` - PostgreSQLを使用した100本ノック
+- `preprocess_knock_SQLite.ipynb` - SQLiteを使用したCRUD操作の演習（10問）+ 基本問題
+- `preprocess_knock_Python.ipynb` - Pythonを使用した100本ノック
+- `preprocess_knock_R.ipynb` - Rを使用した100本ノック
 
 ## How to contribute
 
