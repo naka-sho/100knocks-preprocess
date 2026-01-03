@@ -7,7 +7,6 @@ and loads all CSV data into it.
 
 import sqlite3
 import csv
-import os
 from pathlib import Path
 
 # Database file path
@@ -18,9 +17,14 @@ def create_tables(conn):
     """Create all tables with schema compatible with SQLite."""
     cursor = conn.cursor()
     
+    # Define allowed tables for security
+    ALLOWED_TABLES = {'customer', 'category', 'product', 'store', 'receipt', 'geocode'}
+    
     # Drop existing tables if they exist
     tables = ['customer', 'category', 'product', 'store', 'receipt', 'geocode']
     for table in tables:
+        if table not in ALLOWED_TABLES:
+            raise ValueError(f"Invalid table name: {table}")
         cursor.execute(f"DROP TABLE IF EXISTS {table}")
     
     # Customer table
@@ -116,6 +120,12 @@ def create_tables(conn):
 
 def load_csv_data(conn, table_name, csv_file):
     """Load data from CSV file into specified table."""
+    # Define allowed tables for security
+    ALLOWED_TABLES = {'customer', 'category', 'product', 'store', 'receipt', 'geocode'}
+    
+    if table_name not in ALLOWED_TABLES:
+        raise ValueError(f"Invalid table name: {table_name}")
+    
     cursor = conn.cursor()
     
     if not csv_file.exists():
@@ -129,7 +139,7 @@ def load_csv_data(conn, table_name, csv_file):
         # Create placeholder string for SQL
         placeholders = ','.join(['?' for _ in headers])
         
-        # Insert data
+        # Insert data - table_name is validated above
         row_count = 0
         for row in reader:
             cursor.execute(
@@ -173,7 +183,11 @@ def main():
         # Show table counts
         print("\nTable row counts:")
         cursor = conn.cursor()
+        # Define allowed tables for security
+        ALLOWED_TABLES = {'customer', 'category', 'product', 'store', 'receipt', 'geocode'}
         for table in tables:
+            if table not in ALLOWED_TABLES:
+                raise ValueError(f"Invalid table name: {table}")
             cursor.execute(f"SELECT COUNT(*) FROM {table}")
             count = cursor.fetchone()[0]
             print(f"  {table}: {count:,} rows")
